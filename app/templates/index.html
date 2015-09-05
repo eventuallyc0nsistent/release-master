@@ -1,0 +1,6 @@
+{% if g.user %}
+<a href="{{ url_for('user_bp.get_user_repos') }}">Get user repos</a> / 
+<a href="{{ url_for('user_bp.logout') }}">Logout</a>
+{% else %}
+<a href="{{ url_for('user_bp.login') }}">Login</a>
+{% endif %}
