@@ -1,0 +1,14 @@
+/*
+Index page
+-----------
+*/
+body#index {
+  background-color: #DADADA;
+}
+body#index > .grid {
+  height: 100%;
+}
+
+body#index .column {
+  max-width: 450px;
+}

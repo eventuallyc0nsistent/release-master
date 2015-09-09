@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Release Master | {{ title }}</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/semantic.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+	<script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/semantic.min.js') }}"></script>
+</head>
+<body id="{{ body_id }}">
+{% block content %}
+{% endblock %}
+</body>
+</html>

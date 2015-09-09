@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+
+{% set title = 'Commit Messages' %}
+
+{% block content %}
+
+{% for item in results %}
+	{{ 30*(current_page-1) + loop.index }}.&nbsp;&nbsp;&nbsp;
+	{{ item.commit.message }} - 
+	<a href="{{ item.committer.url }}">{{ item.commit.author.name }}</a> (<a href="{{ item.url }}">{{item.sha|truncate(7, True)}}</a>) | {{ item.commit.committer.date}}
+	<br/>
+{% endfor %}
+
+
+{% if pages.first %}
+<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.first) }}">First</a> / 
+{% endif %}
+
+{% if pages.prev %}
+<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.prev) }}">Prev</a> / 
+{% endif %}
+
+{% if pages.next %}
+<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.next) }}">Next</a> / 
+{% endif %}
+
+{% if pages.last %}
+<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.last) }}">Last</a> 
+{% endif %}
+
+
+{% endblock %}

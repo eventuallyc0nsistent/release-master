@@ -8,5 +8,6 @@ class User(Base):
     username = Column(String(200))
     github_access_token = Column(String(200))
 
-    def __init__(self, github_access_token):
+    def __init__(self, username, github_access_token):
+        self.username = username
         self.github_access_token = github_access_token

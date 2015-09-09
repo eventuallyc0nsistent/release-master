@@ -1,6 +1,63 @@
-{% for repo in results %}
-	<a href="{{ url_for('user_bp.get_user_repos_commits', 
-				owner=owner, repo=repo.name) }}">
-	{{ repo.name }}
-	</a><br/>
-{% endfor %}
+{% extends "master.html" %}
+
+{% set title = 'Repositories' %}
+
+{% block content %}
+<div class="ui container">
+{% include "topbar.html" %}
+	<div class="ui grid">
+		<div class="two wide column"></div>
+		
+		<div class="twelve wide column">
+			<div class="ui divided items">
+			{% for repo in repos %}
+			  <div class="item">
+			    <div class="ui tiny image">
+			    	<a href="{{ repo.owner.html_url }}" title="{{ repo.owner.login }}">
+			    		<img alt="{{ repo.owner.login }}" src="{{ repo.owner.avatar_url }}"/>
+					</a>
+			    </div>
+			    <div class="content">
+					{% set own, rep = repo.full_name.split('/') %}
+					<a class="header" 
+					   href="{{ url_for('user_bp.get_user_repos_commits', owner=own, repo=rep, page=1) }}">
+					{{ repo.name }}
+					</a>
+					<div class="meta">
+						<a href="{{ repo.owner.html_url }}">
+						{{ own }}
+						</a> | Updated: {{ repo.updated_at }}
+					</div>
+				    <div class="description">
+				    	{{ repo.description }}
+				    </div>
+				    <div class="extra">
+				    	<div class="ui label teal">
+				    		{{ repo.language }}
+				    	</div>
+				    </div>
+			    </div>
+			  </div>
+			{% endfor %}
+			</div>
+
+		{% if pages.first %}
+		<a href="{{ url_for('user_bp.get_user_repos', page=pages.first) }}">First</a> / 
+		{% endif %}
+
+		{% if pages.prev %}
+		<a href="{{ url_for('user_bp.get_user_repos', page=pages.prev) }}">Prev</a> / 
+		{% endif %}
+
+		{% if pages.next %}
+		<a href="{{ url_for('user_bp.get_user_repos', page=pages.next) }}">Next</a> / 
+		{% endif %}
+
+		{% if pages.last %}
+		<a href="{{ url_for('user_bp.get_user_repos', page=pages.last) }}">Last</a> 
+		{% endif %}
+		</div>
+		<div class="two wide column"></div>
+	</div>
+</div>
+{% endblock %}
