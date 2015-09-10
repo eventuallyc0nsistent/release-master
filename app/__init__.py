@@ -4,6 +4,7 @@ Authorize Users and fetch commit logs
 from flask import Flask, request, g, session, redirect, url_for
 from flask import render_template_string
 from flask.ext.github import GitHub
+from helpers.jinja2_env_filters import datetimeformat
 from models.tables import User
 from models.db_connection import db_session
 from helpers.config_reader import (DEBUG, SECRET_KEY, GITHUB_CLIENT_ID,
@@ -12,6 +13,9 @@ from helpers.config_reader import (DEBUG, SECRET_KEY, GITHUB_CLIENT_ID,
 # setup flask
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+# jinja2 filter
+app.jinja_env.filters['datetimeformat'] = datetimeformat
 
 # setup github-flask
 github = GitHub(app)

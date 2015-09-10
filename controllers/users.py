@@ -1,8 +1,7 @@
 import re
 from app import github
 from flask import (Blueprint, session, url_for, jsonify,
-                   redirect, render_template)
-
+                   redirect, render_template, request)
 
 user_bp = Blueprint('user_bp', __name__, template_folder='templates')
 
@@ -11,8 +10,6 @@ user_bp = Blueprint('user_bp', __name__, template_folder='templates')
 def get_user_repos(page):
     response = github.raw_request('get', 'user/repos?page=%s'%page)
     json_ = response.json()
-    # return jsonify(result=json_)
-
     pages = get_pages(response.links)
 
     return render_template('repositories.html',
@@ -42,6 +39,7 @@ def get_user_repos_commits(owner, repo, page):
                 'get', 'repos/'+owner+'/'+repo+'/commits?page=%s'%page)
     json_ = response.json()
     pages = get_pages(response.links)
+    # return jsonify(result=json_)
     return render_template('commit-messages.html',
                            pages=pages,
                            current_page=page,
@@ -49,6 +47,11 @@ def get_user_repos_commits(owner, repo, page):
                            owner=owner,
                            repository=repo,
                            title='Commits')
+
+@user_bp.route('/user/add-to-changelog/<commit_hash>')
+def add_to_changelog(commit_hash):
+    print commit_hash
+    return jsonify(result=True)
 
 @user_bp.route('/user/login')
 def login():

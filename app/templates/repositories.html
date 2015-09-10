@@ -24,40 +24,49 @@
 					{{ repo.name }}
 					</a>
 					<div class="meta">
-						<a href="{{ repo.owner.html_url }}">
+						<a class="link" href="{{ repo.owner.html_url }}">
 						{{ own }}
-						</a> | Updated: {{ repo.updated_at }}
+						</a> | <span class="teal">{{ repo.updated_at|datetimeformat('%d %B, %Y') }}</span>
 					</div>
 				    <div class="description">
 				    	{{ repo.description }}
 				    </div>
 				    <div class="extra">
-				    	<div class="ui label teal">
-				    		{{ repo.language }}
-				    	</div>
+				    	{{ repo.language }}
 				    </div>
 			    </div>
 			  </div>
 			{% endfor %}
 			</div>
 
+		<!-- PAGINATION -->
 		{% if pages.first %}
-		<a href="{{ url_for('user_bp.get_user_repos', page=pages.first) }}">First</a> / 
+		<div class="ui left floated segment">
+			<a href="{{ url_for('user_bp.get_user_repos', page=pages.first) }}">First</a>
+		</div> 
 		{% endif %}
 
 		{% if pages.prev %}
-		<a href="{{ url_for('user_bp.get_user_repos', page=pages.prev) }}">Prev</a> / 
-		{% endif %}
-
-		{% if pages.next %}
-		<a href="{{ url_for('user_bp.get_user_repos', page=pages.next) }}">Next</a> / 
+		<div class="ui left floated segment">
+			<a href="{{ url_for('user_bp.get_user_repos', page=pages.prev) }}">Prev</a> 
+		</div> 
 		{% endif %}
 
 		{% if pages.last %}
-		<a href="{{ url_for('user_bp.get_user_repos', page=pages.last) }}">Last</a> 
+		<div class="ui right floated segment">
+			<a href="{{ url_for('user_bp.get_user_repos', page=pages.last) }}">Last</a> 
+		</div>
 		{% endif %}
+
+		{% if pages.next %}
+		<div class="ui right floated segment">
+			<a href="{{ url_for('user_bp.get_user_repos', page=pages.next) }}">Next</a>
+		</div>
+		{% endif %}
+
 		</div>
 		<div class="two wide column"></div>
 	</div>
+{% include "footer.html" %}
 </div>
 {% endblock %}

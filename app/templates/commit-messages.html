@@ -3,30 +3,72 @@
 {% set title = 'Commit Messages' %}
 
 {% block content %}
+<div class="ui container">
+{% include "topbar.html" %}
 
-{% for item in results %}
-	{{ 30*(current_page-1) + loop.index }}.&nbsp;&nbsp;&nbsp;
-	{{ item.commit.message }} - 
-	<a href="{{ item.committer.url }}">{{ item.commit.author.name }}</a> (<a href="{{ item.url }}">{{item.sha|truncate(7, True)}}</a>) | {{ item.commit.committer.date}}
-	<br/>
-{% endfor %}
+	<div class="ui grid">
+		<div class="four wide column"></div>
+		<div class="eight wide column">
+			<div class="ui feed">
+			
+				{% for item in results %}
+				<div class="event">
+					<div class="ui checkbox">
+						<input type="checkbox" name="checkbox">
+					</div>
+			    	<div class="label">
+			    		<a href="{{ item.author.html_url }}" title="{{ item.author.login }}">
+			    			<img alt="{{ item.author.login }}" src="{{ item.author.avatar_url }}"/>
+						</a>
+			    	</div>
+			    	<div class="content">
+				    	<div class="summary">
+				    		<a class="user" href="{{ item.author.html_url }}">{{ item.commit.author.name }}</a>
+							<div class="date">{{ item.commit.committer.date|datetimeformat('%d %B, %Y') }}</div>
+						</div>
+						<div class="extra text">{{ item.commit.message }}</div>
+						<div class="meta">
+							<a class="add-to-changelog" data-commit="{{ item.sha }}"><i class="icon random"></i>Add to CHANGELOG</a>
+							<a href="{{ item.html_url }}">{{item.sha|truncate(7, True)}}</a>
+						</div>
+			    	</div>
+				</div>
+				{% endfor %}
+				
+			</div>
+
+			<!-- PAGINATION -->
+			{% if pages.first %}
+			<div class="ui left floated segment">
+				<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.first) }}">First</a> 
+			</div>
+			{% endif %}
+
+			{% if pages.prev %}
+			<div class="ui left floated segment">
+				<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.prev) }}">Prev</a>
+			</div>
+			{% endif %}
 
 
-{% if pages.first %}
-<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.first) }}">First</a> / 
-{% endif %}
+			{% if pages.last %}
+			<div class="ui right floated segment">
+				<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.last) }}">Last</a> 
+			</div>
+			{% endif %}
 
-{% if pages.prev %}
-<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.prev) }}">Prev</a> / 
-{% endif %}
+			{% if pages.next %}
+			<div class="ui right floated segment">
+				<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.next) }}">Next</a>
+			</div>
+			{% endif %}
 
-{% if pages.next %}
-<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.next) }}">Next</a> / 
-{% endif %}
+		</div>
+		<div class="four wide column"></div>
+	</div>
 
-{% if pages.last %}
-<a href="{{ url_for('user_bp.get_user_repos_commits', owner=owner, repo=repository, page=pages.last) }}">Last</a> 
-{% endif %}
-
+{% include "footer.html" %}
+</div>
+</div>
 
 {% endblock %}
